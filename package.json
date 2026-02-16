@@ -1,0 +1,24 @@
+{
+  "name": "employee-payroll-system-bridgelab",
+  "version": "1.0.0",
+  "description": "Objective: Build a server-side web application to manage employee records and calculate monthly payroll using Node.js, Express, and EJS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Divyansh-1728/Employee-Payroll-System-BridgeLab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Divyansh-1728/Employee-Payroll-System-BridgeLab/issues"
+  },
+  "homepage": "https://github.com/Divyansh-1728/Employee-Payroll-System-BridgeLab#readme",
+  "dependencies": {
+    "ejs": "^4.0.1",
+    "express": "^5.2.1"
+  }
+}
