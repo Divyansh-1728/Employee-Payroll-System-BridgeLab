@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="logo">Edit Employee</div>
+        <div class="actions">
+            <a href="/" class="btn-add" style="background-color: #777;">Cancel</a>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 600px; margin: 0 auto;">
+        <div class="card">
+            <form action="/edit/<%= employee.id %>" method="POST">
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="name" style="display:block; margin-bottom:5px; font-weight:bold;">Full Name</label>
+                    <input type="text" name="name" id="name" value="<%= employee.name %>" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="department" style="display:block; margin-bottom:5px; font-weight:bold;">Department</label>
+                    <select name="department" id="department" 
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option value="HR" <%= employee.department === 'HR' ? 'selected' : '' %>>HR</option>
+                        <option value="IT" <%= employee.department === 'IT' ? 'selected' : '' %>>IT</option>
+                        <option value="Sales" <%= employee.department === 'Sales' ? 'selected' : '' %>>Sales</option>
+                        <option value="Finance" <%= employee.department === 'Finance' ? 'selected' : '' %>>Finance</option>
+                        <option value="Marketing" <%= employee.department === 'Marketing' ? 'selected' : '' %>>Marketing</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="basicSalary" style="display:block; margin-bottom:5px; font-weight:bold;">Basic Salary (₹)</label>
+                    <input type="number" name="basicSalary" id="basicSalary" value="<%= employee.basicSalary %>" required min="0" 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+
+                <button type="submit" class="btn-add" style="width: 100%; border: none; cursor: pointer; font-size: 16px;">
+                    Update Employee
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

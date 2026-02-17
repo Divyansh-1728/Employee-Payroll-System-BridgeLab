@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="logo">Add New Employee</div>
+        <div class="actions">
+            <a href="/" class="btn-add" style="background-color: #777;">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 600px; margin: 0 auto;">
+        <div class="card">
+            <form action="/add" method="POST">
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="name" style="display:block; margin-bottom:5px; font-weight:bold;">Full Name</label>
+                    <input type="text" name="name" id="name" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="department" style="display:block; margin-bottom:5px; font-weight:bold;">Department</label>
+                    <select name="department" id="department" 
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="basicSalary" style="display:block; margin-bottom:5px; font-weight:bold;">Basic Salary (₹)</label>
+                    <input type="number" name="basicSalary" id="basicSalary" required min="0" 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+
+                <button type="submit" class="btn-add" style="width: 100%; border: none; cursor: pointer; font-size: 16px;">
+                    Save Employee
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
