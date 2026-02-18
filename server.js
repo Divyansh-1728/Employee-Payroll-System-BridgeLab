@@ -1,74 +1,104 @@
-const express = require('express');
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
+
 const app = express();
-const fileHandler = require('./modules/fileHandler');
+const PORT = 3000;
 
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-app.get('/', async (req, res) => {
-    const employees = await fileHandler.read();
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-    const totalBasic = employees.reduce((sum, emp) => sum + Number(emp.basicSalary), 0);
-    
-    const stats = {
-        totalEmployees: employees.length,
-        uniqueDepts: new Set(employees.map(e => e.department)).size,
-        totalBasic: totalBasic.toLocaleString(),
-        totalTax: (totalBasic * 0.12).toLocaleString(),
-        totalNet: (totalBasic * 0.88).toLocaleString(),
-        avgSalary: employees.length ? (totalBasic / employees.length).toFixed(0) : 0
-    };
 
-    res.render('index', { employees, stats });
+//  DATA STORAGE 
+let employees = [];
+
+
+// HOME PAGE 
+app.get("/", (req, res) => {
+  const search = req.query.search || "";
+
+  const filteredEmployees = employees.filter(emp =>
+    emp.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  res.render("index", {
+    employees: filteredEmployees,
+    search
+  });
 });
 
-app.get('/add', (req, res) => res.render('add'));
 
-app.post('/add', async (req, res) => {
-    const employees = await fileHandler.read();
-    employees.push({
-        id: Date.now(), 
-        name: req.body.name,
-        department: req.body.department,
-        basicSalary: Number(req.body.basicSalary)
-    });
-    await fileHandler.write(employees);
-    res.redirect('/');
+//  ADD PAGE 
+app.get("/add", (req, res) => {
+  res.render("add");
 });
 
-app.get('/edit/:id', async (req, res) => {
-    const employees = await fileHandler.read();
-    const employee = employees.find(e => e.id === Number(req.params.id));
-    res.render('edit', { employee });
+
+// ADD EMPLOYEE 
+app.post("/add", (req, res) => {
+  const { name, gender, department, salary, startDate } = req.body;
+
+  const newEmployee = {
+    id: Date.now().toString(),
+    name,
+    gender,
+    department,
+    salary,
+    startDate
+  };
+
+  employees.push(newEmployee);
+  res.redirect("/");
 });
 
-app.post('/edit/:id', async (req, res) => {
-    const employees = await fileHandler.read();
-    const index = employees.findIndex(e => e.id === Number(req.params.id));
-    
-    if (index !== -1) {
-        employees[index] = { 
-            id: Number(req.params.id),
-            name: req.body.name,
-            department: req.body.department,
-            basicSalary: Number(req.body.basicSalary)
-        };
-        await fileHandler.write(employees);
-    }
-    res.redirect('/');
+
+//EDIT PAGE OPEN 
+app.get("/edit/:id", (req, res) => {
+  const id = req.params.id;
+
+  const employee = employees.find(emp => emp.id == id);
+
+  if (!employee) {
+    return res.send("Employee not found");
+  }
+
+  res.render("edit", { employee });
 });
 
-app.get('/delete/:id', async (req, res) => {
-    const idToDelete = Number(req.params.id);
-    console.log("Attempting to delete ID:", idToDelete); 
 
-    const employees = await fileHandler.read();
-    
-    const filtered = employees.filter(e => e.id !== idToDelete);
+//  UPDATE EMPLOYEE 
+app.post("/edit/:id", (req, res) => {
+  const id = req.params.id;
 
-    await fileHandler.write(filtered);
-    res.redirect('/');
+  const { name, gender, department, salary, startDate } = req.body;
+
+  const employee = employees.find(emp => emp.id == id);
+
+  if (employee) {
+    employee.name = name;
+    employee.gender = gender;
+    employee.department = department;
+    employee.salary = salary;
+    employee.startDate = startDate;
+  }
+
+  res.redirect("/");
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+ 
+app.post("/delete/:id", (req, res) => {
+  const id = req.params.id;
+
+  employees = employees.filter(emp => emp.id != id);
+
+  res.redirect("/");
+});
+
+
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});

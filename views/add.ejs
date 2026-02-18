@@ -1,51 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Add Employee</title>
-    <link rel="stylesheet" href="/style.css">
+  <title>Add Employee</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="top-bar">
-        <div class="logo">Add New Employee</div>
-        <div class="actions">
-            <a href="/" class="btn-add" style="background-color: #777;">Back to Dashboard</a>
-        </div>
-    </div>
+<body class="bg-light">
 
-    <div class="container" style="max-width: 600px; margin: 0 auto;">
-        <div class="card">
-            <form action="/add" method="POST">
-                
-                <div style="margin-bottom: 15px;">
-                    <label for="name" style="display:block; margin-bottom:5px; font-weight:bold;">Full Name</label>
-                    <input type="text" name="name" id="name" required 
-                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                </div>
+<div class="container mt-4">
+  <h3 class="text-success mb-4">Add Employee</h3>
 
-                <div style="margin-bottom: 15px;">
-                    <label for="department" style="display:block; margin-bottom:5px; font-weight:bold;">Department</label>
-                    <select name="department" id="department" 
-                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                        <option value="HR">HR</option>
-                        <option value="IT">IT</option>
-                        <option value="Sales">Sales</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Marketing">Marketing</option>
-                    </select>
-                </div>
+  <div class="card shadow-sm p-4">
+    <form action="/add" method="POST">
 
-                <div style="margin-bottom: 15px;">
-                    <label for="basicSalary" style="display:block; margin-bottom:5px; font-weight:bold;">Basic Salary (₹)</label>
-                    <input type="number" name="basicSalary" id="basicSalary" required min="0" 
-                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                </div>
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" required>
+      </div>
 
-                <button type="submit" class="btn-add" style="width: 100%; border: none; cursor: pointer; font-size: 16px;">
-                    Save Employee
-                </button>
-            </form>
-        </div>
-    </div>
+      <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <select name="gender" class="form-control" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Department</label>
+        <input type="text" name="department" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Salary</label>
+        <input type="number" name="salary" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Start Date</label>
+        <input type="date" name="startDate" class="form-control" required>
+      </div>
+
+      <button type="submit" class="btn btn-success">Add Employee</button>
+      <a href="/" class="btn btn-secondary">Cancel</a>
+
+    </form>
+  </div>
+</div>
+
 </body>
 </html>

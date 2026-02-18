@@ -1,90 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Employee Payroll</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Employee Payroll</title>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="bg-light">
 
-    <div class="top-bar">
-        <div class="logo">
-            <i class="fas fa-users-cog"></i> EMPLOYEE PAYROLL
-        </div>
-        <div class="actions">
-            <i class="fas fa-search" style="font-size: 20px; color:#aaa; margin-top: 10px;"></i>
-            <a href="/add" class="btn-add">+ Add User</a>
-        </div>
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="text-success">EMPLOYEE PAYROLL</h3>
+    <a href="/add" class="btn btn-success">
+      <i class="fa fa-plus"></i> Add User
+    </a>
+  </div>
+
+  <h4 class="mb-3">Employee Details</h4>
+
+  <form method="GET" action="/" class="mb-4">
+    <div class="input-group">
+      <input type="text" name="search" class="form-control"
+             placeholder="Search by name..."
+             value="<%= search || '' %>">
+      <button class="btn btn-outline-secondary" type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+      <a href="/" class="btn btn-outline-danger">Clear</a>
+    </div>
+  </form>
+
+  <% 
+    let totalSalary = 0
+    let departments = new Set()
+
+    employees.forEach(emp => {
+      totalSalary += Number(emp.salary)
+      departments.add(emp.department)
+    })
+
+    let totalTax = totalSalary * 0.12
+    let totalNet = totalSalary - totalTax
+    let avgSalary = employees.length ? totalSalary / employees.length : 0
+  %>
+
+  <!-- Cards -->
+  <div class="row mb-4">
+    <div class="col-md-2">
+      <div class="card shadow-sm text-center p-3">
+        <i class="fa fa-users text-secondary"></i>
+        <p>Total Employees</p>
+        <h6><%= employees.length %></h6>
+      </div>
     </div>
 
-    <div class="stats-grid">
-        <div class="card">
-            <i class="fas fa-users icon"></i>
-            <h3>Total Employees</h3>
-            <div class="value"><%= stats.totalEmployees %></div>
-        </div>
-        <div class="card">
-            <i class="fas fa-building icon"></i>
-            <h3>Departments</h3>
-            <div class="value"><%= stats.uniqueDepts %></div>
-        </div>
-        <div class="card">
-            <i class="fas fa-money-bill-wave icon"></i>
-            <h3>Total Basic Salary</h3>
-            <div class="value">₹<%= stats.totalBasic %></div>
-        </div>
-        <div class="card">
-            <i class="fas fa-file-invoice-dollar icon"></i>
-            <h3>Total Tax (12%)</h3>
-            <div class="value">₹<%= stats.totalTax %></div>
-        </div>
-        <div class="card">
-            <i class="fas fa-wallet icon"></i>
-            <h3>Total Net Salary</h3>
-            <div class="value">₹<%= stats.totalNet %></div>
-        </div>
-        <div class="card">
-            <i class="fas fa-chart-line icon"></i>
-            <h3>Average Salary</h3>
-            <div class="value">₹<%= stats.avgSalary %></div>
-        </div>
+    <div class="col-md-2">
+      <div class="card shadow-sm text-center p-3">
+        <i class="fa fa-building text-secondary"></i>
+        <p>Departments</p>
+        <h6><%= departments.size %></h6>
+      </div>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Gender</th> <th>Department</th>
-                <th>Salary</th>
-                <th>Start Date</th> <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (employees.length > 0) { %>
-                <% employees.forEach(emp => { %>
-                    <tr>
-                        <td>
-                            <div class="profile-cell">
-                                <div class="avatar"><i class="fas fa-user"></i></div>
-                                <span><%= emp.name %></span>
-                            </div>
-                        </td>
-                        <td>Unknown</td> <td><span style="background:#e8f5e9; color:#2e7d32; padding:3px 8px; border-radius:10px; font-size:12px;"><%= emp.department %></span></td>
-                        <td>₹<%= Number(emp.basicSalary).toLocaleString() %></td>
-                        <td>Jan 01, 2024</td> <td>
-                            <a href="#" class="action-btn"><i class="fas fa-pen"></i></a>
-                            <a href="#" class="action-btn"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                <% }) %>
-            <% } else { %>
-                <tr>
-                    <td colspan="6" style="text-align:center; padding: 20px;">No employees found.</td>
-                </tr>
-            <% } %>
-        </tbody>
+    <div class="col-md-2">
+      <div class="card shadow-sm text-center p-3">
+        <i class="fa fa-money-bill text-warning"></i>
+        <p>Total Basic</p>
+        <h6>₹<%= totalSalary.toFixed(2) %></h6>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card shadow-sm text-center p-3">
+        <i class="fa fa-receipt text-dark"></i>
+        <p>Total Tax (12%)</p>
+        <h6>₹<%= totalTax.toFixed(2) %></h6>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card shadow-sm text-center p-3">
+        <i class="fa fa-wallet text-success"></i>
+        <p>Total Net</p>
+        <h6 class="text-success">₹<%= totalNet.toFixed(2) %></h6>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card shadow-sm text-center p-3">
+        <i class="fa fa-chart-line text-dark"></i>
+        <p>Average</p>
+        <h6>₹<%= avgSalary.toFixed(2) %></h6>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card shadow-sm">
+    <table class="table table-striped mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Department</th>
+          <th>Salary</th>
+          <th>Start Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% employees.forEach(emp => { %>
+          <tr>
+            <td><%= emp.name %></td>
+            <td><%= emp.gender %></td>
+            <td><%= emp.department %></td>
+            <td>₹<%= emp.salary %></td>
+            <td><%= emp.startDate %></td>
+            <td>
+              <a href="/edit/<%= emp.id %>" class="btn btn-sm btn-outline-success">
+                <i class="fa fa-pen"></i>
+              </a>
+
+              <form action="/delete/<%= emp.id %>" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-outline-danger"
+                        onclick="return confirm('Are you sure?')">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
     </table>
+  </div>
 
+</div>
 </body>
 </html>
